@@ -9,7 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,11 +18,16 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Build and Deploy with Docker
-        env:
-          DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
-        run: |
-          docker build -t flask-app .
-          docker stop flask-app || true
-          docker rm flask-app || true
-          docker run -d --name flask-app -p 5000:5000 flask-app
+      - name: Deploy FastApi MainServer(Main)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/Fastapi-cpu-bound 
+            git pull
+            docker build -t flask-app .
+            docker stop flask-app || true
+            docker rm flask-app || true
+            docker run -d --name flask-app -p 5000:5000 flask-app
