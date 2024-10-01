@@ -27,7 +27,7 @@ jobs:
           script: |
             cd ~/Fastapi-cpu-bound 
             git pull
-            docker build -t flask-app .
+            docker build --no-cache -t flask-app .
             docker stop flask-app || true
             docker rm flask-app || true
             docker run -d --name flask-app -p 5000:5000 flask-app
