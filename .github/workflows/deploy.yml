@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/home/ice/Desktop/dev/docker-practice
+            cd /home/ice/Desktop/dev/docker-practice
             git pull
             docker build --no-cache -t flask-app .
             docker stop flask-app || true
