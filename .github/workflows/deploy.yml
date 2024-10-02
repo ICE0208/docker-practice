@@ -4,20 +4,20 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # 수동 실행
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
+    steps:
+      # 1. SSH 설정 (서버에 접속하기 위한 비밀키 설정)
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # 2. Flask 애플리케이션 배포
       - name: Deploy Flask (main)
         uses: appleboy/ssh-action@v1.0.3
         with:
